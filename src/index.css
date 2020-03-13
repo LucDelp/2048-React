@@ -1,3 +1,13 @@
+html {
+  width: 100%;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+  width: 100%
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +15,75 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  height: 100%;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: lightgoldenrodyellow;
+}
+
+.Scoreboard {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 60%;
+}
+
+.Scoreboard__score {
+  border-radius: .5rem;
+  text-transform: uppercase;
+  padding: .2rem;
+  border:.1rem solid ;
+}
+
+.Scoreboard__score--max {
+  border-color: yellow;
+}
+
+.Scoreboard__score--current {
+  border-color: rebeccapurple;
+}
+
+.BoardContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: none;
+  border-radius: .5rem;
+  background-color: rosybrown;
+
+  width: 20rem;
+  height: 20rem;
+}
+
+.BoardContainer__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin: .5rem;
+}
+
+.BoardContainer__tile {
+  border: .1rem solid orangered;
+  border-radius: .5rem;
+  background-color: orange;
+  color: darkred;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: .2rem;
+  margin: .2rem;
+  width: 2rem;
+  height: 2rem;
 }
