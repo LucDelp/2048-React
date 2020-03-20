@@ -3,16 +3,12 @@ import { LEFT, RIGHT, UP, DOWN } from './boardAction'
 export function boardReducer (boardState, action) {
   switch (action.type) {
     case LEFT:
-      console.log('LEFT')
       return sideMovement(boardState, LEFT)
     case RIGHT:
-      console.log('RIGHT')
       return sideMovement(boardState, RIGHT)
     case UP:
-      console.log('UP')
       return heightMovement(boardState, UP)
     case DOWN:
-      console.log('DOWN')
       return heightMovement(boardState, DOWN)
     default:
       return boardState
@@ -24,7 +20,7 @@ function hasRelevantValue (nestedArray) {
 }
 
 function sideMovement (boardState, direction) {
-  return boardState.map(row => {
+  const calculatedBoard = boardState.map(row => {
     if (hasRelevantValue(row)) {
       /** calcule de la ligne */
       switch (direction) {
@@ -38,6 +34,7 @@ function sideMovement (boardState, direction) {
     }
     return row
   })
+  return boardWithInsertedNewValue(calculatedBoard)
 }
 
 /** FIRST DIRECTION MEANS : 👈 || 👆 */
@@ -47,21 +44,21 @@ function firstDirectionCalculation (nestedArray) {
   const ordererdFirstDirectionNestedArray = orderNestedArrayFirstDirection(nestedArray)
   const [elem1, elem2, elem3, elem4] = ordererdFirstDirectionNestedArray
 
-  if (elem1 === elem2) {
+  if (elem1 === elem2 && elem1 !== 0) {
     calculatedNestedArray.push(2 * elem1)
     calculatedNestedArray.push(elem3)
     calculatedNestedArray.push(elem4)
     calculatedNestedArray.push(0)
 
     return calculatedNestedArray
-  } else if (elem2 === elem3) {
+  } else if (elem2 === elem3 && elem2 !== 0) {
     calculatedNestedArray.push(elem1)
     calculatedNestedArray.push(2 * elem2)
     calculatedNestedArray.push(elem4)
     calculatedNestedArray.push(0)
 
     return calculatedNestedArray
-  } else if (elem3 === elem4) {
+  } else if (elem3 === elem4 && elem3 !== 0) {
     calculatedNestedArray.push(elem1)
     calculatedNestedArray.push(elem2)
     calculatedNestedArray.push(2 * elem3)
@@ -69,17 +66,15 @@ function firstDirectionCalculation (nestedArray) {
 
     return calculatedNestedArray
   }
-  return calculatedNestedArray
+  return ordererdFirstDirectionNestedArray
 }
 
 function orderNestedArrayFirstDirection (nestedArray) {
-  while (nestedArray[0] === 0) {
-    nestedArray[0] = nestedArray[1]
-    nestedArray[1] = nestedArray[2]
-    nestedArray[2] = nestedArray[3]
-    nestedArray[3] = 0
+  const orderedArray = nestedArray.filter(e => e !== 0)
+  while (orderedArray.length < 4) {
+    orderedArray.push(0)
   }
-  return nestedArray
+  return orderedArray
 }
 
 /** SECOND DIRECTION MEANS : 👉 || 👇 */
@@ -89,21 +84,21 @@ function secondDirectionCalculation (nestedArray) {
   const ordererdSecondDirectionNestedArray = orderNestedArraySecondDirection(nestedArray)
   const [elem1, elem2, elem3, elem4] = ordererdSecondDirectionNestedArray
 
-  if (elem4 === elem3) {
+  if (elem4 === elem3 && elem4 !== 0) {
     calculatedNestedArray.unshift(2 * elem4)
     calculatedNestedArray.unshift(elem2)
     calculatedNestedArray.unshift(elem1)
     calculatedNestedArray.unshift(0)
 
     return calculatedNestedArray
-  } else if (elem3 === elem2) {
+  } else if (elem3 === elem2 && elem3 !== 0) {
     calculatedNestedArray.unshift(elem4)
     calculatedNestedArray.unshift(2 * elem3)
     calculatedNestedArray.unshift(elem1)
     calculatedNestedArray.unshift(0)
 
     return calculatedNestedArray
-  } else if (elem2 === elem1) {
+  } else if (elem2 === elem1 && elem2 !== 0) {
     calculatedNestedArray.unshift(elem4)
     calculatedNestedArray.unshift(elem3)
     calculatedNestedArray.unshift(2 * elem2)
@@ -111,24 +106,20 @@ function secondDirectionCalculation (nestedArray) {
 
     return calculatedNestedArray
   }
-  return calculatedNestedArray
+  return ordererdSecondDirectionNestedArray
 }
 
 function orderNestedArraySecondDirection (nestedArray) {
-  while (nestedArray[3] === 0) {
-    nestedArray[3] = nestedArray[2]
-    nestedArray[2] = nestedArray[1]
-    nestedArray[1] = nestedArray[0]
-    nestedArray[0] = 0
+  const orderedArray = nestedArray.filter(e => e !== 0)
+  while (orderedArray.length < 4) {
+    orderedArray.unshift(0)
   }
-  return nestedArray
+  return orderedArray
 }
 
 /** ***************************************************** */
 
 function heightMovement (boardState, direction) {
-  /** Décomposer un colone */
-  /** Recomposer en ligne */
   const invertedBoardState = boardInverter(boardState)
 
   const calculatedInvertedBoard = invertedBoardState.map(row => {
@@ -146,7 +137,9 @@ function heightMovement (boardState, direction) {
     return row
   })
 
-  return boardInverter(calculatedInvertedBoard)
+  const calculatedBoard = boardInverter(calculatedInvertedBoard)
+  
+  return boardWithInsertedNewValue(calculatedBoard) 
 }
 
 function boardInverter (boardTab) {
@@ -163,4 +156,35 @@ function boardInverter (boardTab) {
     invertedRow4.push(row[3])
   })
   return [invertedRow1, invertedRow2, invertedRow3, invertedRow4]
+}
+
+function getNullValuePosition (boardTab) {
+  const nullValuePosition = []
+  // eslint-disable-next-line
+  boardTab.map((row, indexRow) => {
+    // eslint-disable-next-line
+    row.map((value, indexValue) => {
+      if (value === 0) {
+        nullValuePosition.push({ x: indexRow, y: indexValue })
+      }
+    })
+  })
+  return nullValuePosition
+}
+
+function boardWithInsertedNewValue (board) {
+  const nullValuePosition = getNullValuePosition(board)
+
+  if (nullValuePosition.length === 0) {
+    console.log('gameOVER')
+    return board
+  }
+
+  let index = Math.floor(Math.random() * nullValuePosition.length) - 1
+
+  if (index < 0) { index = 0 }
+
+  board[nullValuePosition[index].x][nullValuePosition[index].y] = 2
+  console.log(board)
+  return board
 }
