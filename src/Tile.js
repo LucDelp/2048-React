@@ -1,35 +1,35 @@
 import React from 'react'
 
 export default function Tile ({ value }) {
-  const DEFAULT_COLOR = 'rgba(238, 228, 218, 0.35)'
-  const [color, setColor] = React.useState(DEFAULT_COLOR)
+  const DEFAULT_BACKGROUND_COLOR = 'rgba(238, 228, 218, 0.35)'
+  const [backgroundColor, setbackgroundColor] = React.useState(DEFAULT_BACKGROUND_COLOR)
 
   React.useEffect(() => {
     switch (value) {
       case 2:
-        return setColor('#EEE4DA')
+        return setbackgroundColor('#EEE4DA')
       case 4:
-        return setColor('#EDE068')
+        return setbackgroundColor('#EDE0C8')
       case 8:
-        return setColor('#F2B179')
+        return setbackgroundColor('#F2B179')
       case 16:
-        return setColor('#F59563')
+        return setbackgroundColor('#F59563')
       case 32:
-        return setColor('#F67C5F')
+        return setbackgroundColor('#F67C5F')
       case 64:
-        return setColor('#F65E3B')
+        return setbackgroundColor('#F65E3B')
       case 128:
-        return setColor('#EDCF72')
+        return setbackgroundColor('#EDCF72')
       case 256:
-        return setColor('#EDCC61')
+        return setbackgroundColor('#EDCC61')
       case 512:
-        return setColor('#EDC850')
+        return setbackgroundColor('#EDC850')
       case 1024:
-        return setColor('#EDC53F')
+        return setbackgroundColor('#EDC53F')
       case 2048:
-        return setColor('#EDC22E')
+        return setbackgroundColor('#EDC22E')
       default:
-        return setColor(DEFAULT_COLOR)
+        return setbackgroundColor(DEFAULT_BACKGROUND_COLOR)
     }
   }, [value])
 
@@ -37,8 +37,9 @@ export default function Tile ({ value }) {
     <div
       className='BoardContainer__tile'
       style={{
-        backgroundColor: color,
-        fontSize: value >= 1024 ? '2rem' : '3rem'
+        backgroundColor,
+        fontSize: value >= 1024 ? '2rem' : '3rem',
+        color: value > 4 ? 'white' : '#776e65'
       }}
     >
       {value === 0 ? '' : value}
