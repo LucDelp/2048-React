@@ -17,6 +17,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
   height: 100%;
+  color: #776e65;
 }
 
 code {
@@ -27,11 +28,11 @@ code {
 .App {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   align-items: center;
   width: 100%;
   height: 100%;
-  background-color: lightgoldenrodyellow;
+  background-color: #faf8ef;
+  font-family: 'Clear Sans', sans-serif;
 }
 
 .Scoreboard {
@@ -57,15 +58,16 @@ code {
 }
 
 .BoardContainer {
+  margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   border: none;
   border-radius: .5rem;
-  background-color: rosybrown;
+  background-color: #bbada0;
 
-  width: 20rem;
-  height: 20rem;
+  width: 500px;
+  height: 500px;
 }
 
 .BoardContainer__row {
@@ -76,14 +78,15 @@ code {
 }
 
 .BoardContainer__tile {
-  border: .1rem solid orangered;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: .5rem;
-  background-color: orange;
-  color: darkred;
-  font-size: 1.2rem;
+  background-color: rgba(238, 228, 218, 0.35);
+  font-size: 3rem;
   text-align: center;
   padding: .2rem;
   margin: .2rem;
-  width: 2rem;
-  height: 2rem;
+  width: 5rem;
+  height: 5rem;
 }
