@@ -7,9 +7,9 @@ import { UP, DOWN, RIGHT, LEFT } from './boardAction'
 function App () {
   const boardTab = [
     [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0]
+    [0, 2, 0, 0],
+    [0, 0, 4, 0],
+    [0, 0, 0, 2048]
   ]
 
   const [boardState, dispatch] = React.useReducer(boardReducer, boardTab)
