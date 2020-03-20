@@ -138,8 +138,8 @@ function heightMovement (boardState, direction) {
   })
 
   const calculatedBoard = boardInverter(calculatedInvertedBoard)
-  
-  return boardWithInsertedNewValue(calculatedBoard) 
+
+  return boardWithInsertedNewValue(calculatedBoard)
 }
 
 function boardInverter (boardTab) {
