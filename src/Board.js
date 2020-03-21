@@ -9,7 +9,7 @@ export default function Board ({ board, topScore, currentScore, dispatch, hasCha
         dispatch({ type: GET_BOARD_WITH_INSERT })
       }, 250)
     }
-  }, [board, topScore])
+  }, [board])
 
   return (
     <>
