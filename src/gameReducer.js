@@ -1,6 +1,8 @@
 import { LEFT, RIGHT, UP, DOWN, NEW_GAME, GET_BOARD_WITH_INSERT } from './gameAction'
 import { flattenDeep } from 'lodash'
 
+var currentScore = 0
+
 const board = [
   [0, 0, 0, 0],
   [0, 2, 0, 0],
@@ -13,20 +15,19 @@ export const DEFAULT_GAME_STATE = {
   isLost: false,
   currentScore: 0,
   bestScore: 0,
-  topScore: 0,
   hasChanged: false
 }
 
 export function gameReducer (gameState, action) {
   switch (action.type) {
     case LEFT:
-      return { ...gameState, ...sideMovement(gameState.board, LEFT) }
+      return { ...gameState, ...sideMovement(gameState.board, LEFT), currentScore }
     case RIGHT:
-      return { ...gameState, ...sideMovement(gameState.board, RIGHT) }
+      return { ...gameState, ...sideMovement(gameState.board, RIGHT), currentScore }
     case UP:
-      return { ...gameState, ...heightMovement(gameState.board, UP) }
+      return { ...gameState, ...heightMovement(gameState.board, UP), currentScore }
     case DOWN:
-      return { ...gameState, ...heightMovement(gameState.board, DOWN) }
+      return { ...gameState, ...heightMovement(gameState.board, DOWN), currentScore }
     case NEW_GAME:
       return { ...DEFAULT_GAME_STATE }
     case GET_BOARD_WITH_INSERT:
@@ -66,10 +67,13 @@ function firstDirectionCalculation (nestedArray) {
   const [elem1, elem2, elem3, elem4] = ordererdFirstDirectionNestedArray
 
   if (elem1 === elem2 && elem1 !== 0) {
+    currentScore += 2 * elem1
     return [2 * elem1, elem3, elem4, 0]
   } else if (elem2 === elem3 && elem2 !== 0) {
+    currentScore += 2 * elem2
     return [elem1, 2 * elem2, elem4, 0]
   } else if (elem3 === elem4 && elem3 !== 0) {
+    currentScore += 2 * elem3
     return [elem1, elem2, 2 * elem3, 0]
   }
   return ordererdFirstDirectionNestedArray
@@ -90,10 +94,13 @@ function secondDirectionCalculation (nestedArray) {
   const [elem1, elem2, elem3, elem4] = ordererdSecondDirectionNestedArray
 
   if (elem4 === elem3 && elem4 !== 0) {
+    currentScore += 2 * elem4
     return [0, elem1, elem2, 2 * elem4]
   } else if (elem3 === elem2 && elem3 !== 0) {
+    currentScore += 2 * elem3
     return [0, elem1, 2 * elem3, elem4]
   } else if (elem2 === elem1 && elem2 !== 0) {
+    currentScore += 2 * elem2
     return [0, 2 * elem2, elem3, elem4]
   }
   return ordererdSecondDirectionNestedArray
