@@ -62,31 +62,15 @@ function sideMovement (boardState, direction) {
 /** FIRST DIRECTION MEANS : 👈 || 👆 */
 
 function firstDirectionCalculation (nestedArray) {
-  const calculatedNestedArray = []
   const ordererdFirstDirectionNestedArray = orderNestedArrayFirstDirection(nestedArray)
   const [elem1, elem2, elem3, elem4] = ordererdFirstDirectionNestedArray
 
   if (elem1 === elem2 && elem1 !== 0) {
-    calculatedNestedArray.push(2 * elem1)
-    calculatedNestedArray.push(elem3)
-    calculatedNestedArray.push(elem4)
-    calculatedNestedArray.push(0)
-
-    return calculatedNestedArray
+    return [2 * elem1, elem3, elem4, 0]
   } else if (elem2 === elem3 && elem2 !== 0) {
-    calculatedNestedArray.push(elem1)
-    calculatedNestedArray.push(2 * elem2)
-    calculatedNestedArray.push(elem4)
-    calculatedNestedArray.push(0)
-
-    return calculatedNestedArray
+    return [elem1, 2 * elem2, elem4, 0]
   } else if (elem3 === elem4 && elem3 !== 0) {
-    calculatedNestedArray.push(elem1)
-    calculatedNestedArray.push(elem2)
-    calculatedNestedArray.push(2 * elem3)
-    calculatedNestedArray.push(0)
-
-    return calculatedNestedArray
+    return [elem1, elem2, 2 * elem3, 0]
   }
   return ordererdFirstDirectionNestedArray
 }
@@ -102,31 +86,15 @@ function orderNestedArrayFirstDirection (nestedArray) {
 /** SECOND DIRECTION MEANS : 👉 || 👇 */
 
 function secondDirectionCalculation (nestedArray) {
-  const calculatedNestedArray = []
   const ordererdSecondDirectionNestedArray = orderNestedArraySecondDirection(nestedArray)
   const [elem1, elem2, elem3, elem4] = ordererdSecondDirectionNestedArray
 
   if (elem4 === elem3 && elem4 !== 0) {
-    calculatedNestedArray.unshift(2 * elem4)
-    calculatedNestedArray.unshift(elem2)
-    calculatedNestedArray.unshift(elem1)
-    calculatedNestedArray.unshift(0)
-
-    return calculatedNestedArray
+    return [0, elem1, elem2, 2 * elem4]
   } else if (elem3 === elem2 && elem3 !== 0) {
-    calculatedNestedArray.unshift(elem4)
-    calculatedNestedArray.unshift(2 * elem3)
-    calculatedNestedArray.unshift(elem1)
-    calculatedNestedArray.unshift(0)
-
-    return calculatedNestedArray
+    return [0, elem1, 2 * elem3, elem4]
   } else if (elem2 === elem1 && elem2 !== 0) {
-    calculatedNestedArray.unshift(elem4)
-    calculatedNestedArray.unshift(elem3)
-    calculatedNestedArray.unshift(2 * elem2)
-    calculatedNestedArray.unshift(0)
-
-    return calculatedNestedArray
+    return [0, 2 * elem2, elem3, elem4]
   }
   return ordererdSecondDirectionNestedArray
 }
