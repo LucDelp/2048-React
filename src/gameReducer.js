@@ -1,4 +1,4 @@
-import { LEFT, RIGHT, UP, DOWN, NEW_GAME, GET_BOARD_WITH_INSERT } from './gameAction'
+import { LEFT, RIGHT, UP, DOWN, NEW_GAME, GET_BOARD_WITH_INSERT, LOAD_SAVED_STATE, SAVE } from './gameAction'
 import { flattenDeep } from 'lodash'
 
 var currentScore = 0
@@ -29,9 +29,19 @@ export function gameReducer (gameState, action) {
     case DOWN:
       return { ...gameState, ...heightMovement(gameState.board, DOWN), currentScore }
     case NEW_GAME:
+      if (window.localStorage.getItem('2048_TOP_SCORE') < gameState.currentScore) {
+        window.localStorage.setItem('2048_TOP_SCORE', gameState.currentScore)
+      }
+      window.localStorage.removeItem('2048_GAME_STATE')
+      currentScore = 0
       return { ...DEFAULT_GAME_STATE }
     case GET_BOARD_WITH_INSERT:
       return { ...gameState, ...boardWithInsertedNewValue(gameState.board) }
+    case LOAD_SAVED_STATE:
+      return { ...action.payload, hasChanged: false }
+    case SAVE:
+      window.localStorage.setItem('2048_GAME_STATE', JSON.stringify(gameState))
+      return { ...gameState }
     default:
       return gameState
   }

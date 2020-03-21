@@ -7,15 +7,18 @@ export default function Board ({ board, topScore, currentScore, dispatch, hasCha
     if (hasChanged) {
       setTimeout(() => {
         dispatch({ type: GET_BOARD_WITH_INSERT })
-      }, 200)
+      }, 250)
     }
-  }, [board])
+  }, [board, topScore])
 
   return (
     <>
-      <div className='Scoreboard'>
-        <div className='Scoreboard__score Scoreboard__score--max'>top score: {topScore}</div>
-        <div className='Scoreboard__score Scoreboard__score--current'>current score: {currentScore}</div>
+      <div className='Header'>
+        <h1>2048 <span role='img' aria-label='logo'>⚛️</span></h1>
+        <div className='Scoreboard'>
+          <div className='Scoreboard__score'>top score: {topScore}</div>
+          <div className='Scoreboard__score'>current score: {currentScore}</div>
+        </div>
       </div>
       <div className='BoardContainer'>
         {
