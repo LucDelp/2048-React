@@ -1,35 +1,32 @@
 import React from 'react'
 import './App.css'
-import { boardReducer } from './boardReducer'
-import { UP, DOWN, RIGHT, LEFT } from './boardAction'
+import { gameReducer, DEFAULT_GAME_STATE } from './gameReducer'
+import { UP, DOWN, RIGHT, LEFT } from './gameAction'
 import Board from './Board'
+import GameOver from './GameOver'
 
 function App () {
-  const boardTab = [
-    [0, 0, 0, 0],
-    [0, 2, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 2, 0]
-  ]
-
-  const [boardState, dispatch] = React.useReducer(boardReducer, boardTab)
+  const [gameState, dispatch] = React.useReducer(gameReducer, DEFAULT_GAME_STATE)
 
   function handleArrow (event) {
-    switch (event.code) {
-      case 'ArrowUp':
-        dispatch({ type: UP })
-        break
-      case 'ArrowDown':
-        dispatch({ type: DOWN })
-        break
-      case 'ArrowRight':
-        dispatch({ type: RIGHT })
-        break
-      case 'ArrowLeft':
-        dispatch({ type: LEFT })
-        break
-      default:
-        break
+    event.preventDefault()
+    if (!gameState.isLost) {
+      switch (event.code) {
+        case 'ArrowUp':
+          dispatch({ type: UP })
+          break
+        case 'ArrowDown':
+          dispatch({ type: DOWN })
+          break
+        case 'ArrowRight':
+          dispatch({ type: RIGHT })
+          break
+        case 'ArrowLeft':
+          dispatch({ type: LEFT })
+          break
+        default:
+          break
+      }
     }
   }
 
@@ -38,9 +35,17 @@ function App () {
     return () => { document.removeEventListener('keydown', handleArrow) }
   }, [])
 
+  const { board, topScore, currentScore, hasChanged } = gameState
   return (
     <div className='App'>
-      <Board boardState={boardState} dispatch={dispatch} />
+      <Board
+        board={board}
+        hasChanged={hasChanged}
+        currentScore={currentScore}
+        topScore={topScore}
+        dispatch={dispatch}
+      />
+      {gameState.isLost && (<GameOver dispatch={dispatch} />)}
     </div>
   )
 }

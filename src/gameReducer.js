@@ -1,18 +1,38 @@
-import { LEFT, RIGHT, UP, DOWN } from './boardAction'
+import { LEFT, RIGHT, UP, DOWN, NEW_GAME, GET_BOARD_WITH_INSERT } from './gameAction'
 import { flattenDeep } from 'lodash'
 
-export function boardReducer (boardState, action) {
+const board = [
+  [0, 0, 0, 0],
+  [0, 2, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 2, 0]
+]
+
+export const DEFAULT_GAME_STATE = {
+  board,
+  isLost: false,
+  currentScore: 0,
+  bestScore: 0,
+  topScore: 0,
+  hasChanged: false
+}
+
+export function gameReducer (gameState, action) {
   switch (action.type) {
     case LEFT:
-      return sideMovement(boardState, LEFT)
+      return { ...gameState, ...sideMovement(gameState.board, LEFT) }
     case RIGHT:
-      return sideMovement(boardState, RIGHT)
+      return { ...gameState, ...sideMovement(gameState.board, RIGHT) }
     case UP:
-      return heightMovement(boardState, UP)
+      return { ...gameState, ...heightMovement(gameState.board, UP) }
     case DOWN:
-      return heightMovement(boardState, DOWN)
+      return { ...gameState, ...heightMovement(gameState.board, DOWN) }
+    case NEW_GAME:
+      return { ...DEFAULT_GAME_STATE }
+    case GET_BOARD_WITH_INSERT:
+      return { ...gameState, ...boardWithInsertedNewValue(gameState.board) }
     default:
-      return boardState
+      return gameState
   }
 }
 
@@ -35,7 +55,8 @@ function sideMovement (boardState, direction) {
     }
     return row
   })
-  return boardWithAdderInspection(boardState, calculatedBoard)
+
+  return { board: calculatedBoard, hasChanged: !compareBoardState(boardState, calculatedBoard) }
 }
 
 /** FIRST DIRECTION MEANS : 👈 || 👆 */
@@ -140,7 +161,7 @@ function heightMovement (boardState, direction) {
 
   const calculatedBoard = boardInverter(calculatedInvertedBoard)
 
-  return boardWithAdderInspection(boardState, calculatedBoard)
+  return { board: calculatedBoard, hasChanged: !compareBoardState(boardState, calculatedBoard) }
 }
 
 function boardInverter (boardTab) {
@@ -177,8 +198,10 @@ function boardWithInsertedNewValue (board) {
   const nullValuePosition = getNullValuePosition(board)
 
   if (nullValuePosition.length === 0) {
-    console.log('gameOVER')
-    return board
+    return {
+      isLost: true,
+      board
+    }
   }
 
   let index = Math.floor(Math.random() * nullValuePosition.length) - 1
@@ -186,8 +209,7 @@ function boardWithInsertedNewValue (board) {
   if (index < 0) { index = 0 }
 
   board[nullValuePosition[index].x][nullValuePosition[index].y] = 2
-  console.log(board)
-  return board
+  return { board }
 }
 
 export function compareBoardState (prevBoard, nextBoard) {
@@ -202,11 +224,4 @@ export function compareBoardState (prevBoard, nextBoard) {
   })
 
   return isEqual
-}
-
-function boardWithAdderInspection (prevBoard, nextBoard) {
-  if (compareBoardState(prevBoard, nextBoard)) {
-    return prevBoard
-  }
-  return boardWithInsertedNewValue(nextBoard)
 }
