@@ -1,4 +1,5 @@
 import { LEFT, RIGHT, UP, DOWN } from './boardAction'
+import { flattenDeep } from 'lodash'
 
 export function boardReducer (boardState, action) {
   switch (action.type) {
@@ -34,7 +35,7 @@ function sideMovement (boardState, direction) {
     }
     return row
   })
-  return boardWithInsertedNewValue(calculatedBoard)
+  return boardWithAdderInspection(boardState, calculatedBoard)
 }
 
 /** FIRST DIRECTION MEANS : 👈 || 👆 */
@@ -139,7 +140,7 @@ function heightMovement (boardState, direction) {
 
   const calculatedBoard = boardInverter(calculatedInvertedBoard)
 
-  return boardWithInsertedNewValue(calculatedBoard)
+  return boardWithAdderInspection(boardState, calculatedBoard)
 }
 
 function boardInverter (boardTab) {
@@ -187,4 +188,25 @@ function boardWithInsertedNewValue (board) {
   board[nullValuePosition[index].x][nullValuePosition[index].y] = 2
   console.log(board)
   return board
+}
+
+export function compareBoardState (prevBoard, nextBoard) {
+  const flattenedPrevBoard = flattenDeep(prevBoard)
+  const flattenedNextBoard = flattenDeep(nextBoard)
+  let isEqual = true
+
+  flattenedPrevBoard.map((value, index) => {
+    if (value !== flattenedNextBoard[index]) {
+      isEqual = false
+    }
+  })
+
+  return isEqual
+}
+
+function boardWithAdderInspection (prevBoard, nextBoard) {
+  if (compareBoardState(prevBoard, nextBoard)) {
+    return prevBoard
+  }
+  return boardWithInsertedNewValue(nextBoard)
 }

@@ -1,8 +1,8 @@
 import React from 'react'
 import './App.css'
-import Tile from './Tile'
 import { boardReducer } from './boardReducer'
 import { UP, DOWN, RIGHT, LEFT } from './boardAction'
+import Board from './Board'
 
 function App () {
   const boardTab = [
@@ -38,28 +38,9 @@ function App () {
     return () => { document.removeEventListener('keydown', handleArrow) }
   }, [])
 
-  const maxScore = 123
-  const currentScore = 23456
-
   return (
     <div className='App'>
-      <div className='Scoreboard'>
-        <div className='Scoreboard__score Scoreboard__score--max'>top score: {maxScore}</div>
-        <div className='Scoreboard__score Scoreboard__score--current'>current score: {currentScore}</div>
-      </div>
-      <div className='BoardContainer'>
-        {
-          boardState.map((boardRow, index) => (
-            <div key={`index-${index}-row`} className='BoardContainer__row'>
-              {
-                boardRow.map((tile, index) => (
-                  <Tile key={`index-${index}-tile`} value={tile} />
-                ))
-              }
-            </div>
-          ))
-        }
-      </div>
+      <Board boardState={boardState} dispatch={dispatch} />
     </div>
   )
 }

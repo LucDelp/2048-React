@@ -1,9 +1,22 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
+import { compareBoardState } from './boardReducer'
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+const tab1 = [
+  [0, 0, 0, 0],
+  [0, 2, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 2, 0]
+]
+const tab2 = [
+  [0, 2, 0, 0],
+  [0, 2, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 2, 0]
+]
+
+test('should return false', () => {
+  expect(compareBoardState(tab1, tab2)).toBe(false)
+})
+
+test('should return true', () => {
+  expect(compareBoardState(tab1, tab1)).toBe(true)
+})
