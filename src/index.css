@@ -33,6 +33,7 @@ code {
   height: 100%;
   background-color: #faf8ef;
   font-family: 'Clear Sans', sans-serif;
+  overflow: auto;
 }
 
 .Scoreboard {
