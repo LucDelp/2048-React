@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { LEFT, RIGHT, UP, DOWN, NEW_GAME, GET_BOARD_WITH_INSERT, LOAD_SAVED_STATE, SAVE } from './gameAction'
 import { flattenDeep } from 'lodash'
 
@@ -47,7 +49,7 @@ export function gameReducer (gameState, action) {
   }
 }
 
-function hasRelevantValue (nestedArray) {
+export function hasRelevantValue (nestedArray) {
   return undefined !== nestedArray.find(e => e !== 0)
 }
 
@@ -149,7 +151,7 @@ function heightMovement (boardState, direction) {
   return { board: calculatedBoard, hasChanged: !compareBoardState(boardState, calculatedBoard) }
 }
 
-function boardInverter (boardTab) {
+export function boardInverter (boardTab) {
   const invertedRow1 = []
   const invertedRow2 = []
   const invertedRow3 = []
@@ -165,7 +167,7 @@ function boardInverter (boardTab) {
   return [invertedRow1, invertedRow2, invertedRow3, invertedRow4]
 }
 
-function getNullValuePosition (boardTab) {
+export function getNullValuePosition (boardTab) {
   const nullValuePosition = []
   // eslint-disable-next-line
   boardTab.map((row, indexRow) => {

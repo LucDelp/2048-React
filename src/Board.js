@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react'
 import Tile from './Tile'
 import { GET_BOARD_WITH_INSERT } from './gameAction'
