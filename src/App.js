@@ -10,6 +10,55 @@ import GameOver from './GameOver'
 function App () {
   const [gameState, dispatch] = React.useReducer(gameReducer, DEFAULT_GAME_STATE)
   const [topScore, setTopScore] = React.useState(0)
+  
+  let xDown = null                                                      
+  let yDown = null
+
+  function getTouches(evt) {
+    return evt.touches
+  }  
+
+  function handleTouchStart(evt) {
+    const firstTouch = getTouches(evt)[0];                                      
+    xDown = firstTouch.clientX;                                      
+    yDown = firstTouch.clientY;                                      
+  };                                                
+
+  function handleTouchMove(evt) {
+      if ( ! xDown || ! yDown ) {
+          return;
+      }
+
+      var xUp = evt.touches[0].clientX;                                    
+      var yUp = evt.touches[0].clientY;
+
+      var xDiff = xDown - xUp;
+      var yDiff = yDown - yUp;
+
+      if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {
+          if ( xDiff > 0 ) {
+              /* left swipe */ 
+              dispatch({ type: LEFT })
+          } else {
+              /* right swipe */
+              dispatch({ type: RIGHT })
+
+          }                       
+      } else {
+          if ( yDiff > 0 ) {
+              /* up swipe */ 
+              dispatch({ type: UP })
+
+          } else { 
+              /* down swipe */
+              dispatch({ type: DOWN })
+
+          }                                                                 
+      }
+      /* reset values */
+      xDown = null;
+      yDown = null;                                             
+  };
 
   function handleArrow (event) {
     event.preventDefault()
@@ -44,7 +93,13 @@ function App () {
     }
 
     document.addEventListener('keydown', handleArrow)
-    return () => { document.removeEventListener('keydown', handleArrow) }
+    document.addEventListener('touchstart', handleTouchStart, false);        
+    document.addEventListener('touchmove', handleTouchMove, false);
+    return () => { 
+      document.removeEventListener('keydown', handleArrow)
+      document.removeEventListener('touchstart', handleTouchStart, false)   
+      document.removeEventListener('touchmove', handleTouchMove, false)
+    }
   }, [])
 
   const { board, currentScore, hasChanged, isLost } = gameState
