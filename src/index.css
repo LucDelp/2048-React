@@ -1,6 +1,7 @@
 html {
   width: 100%;
   height: 100%;
+  overscroll-behavior-y: contain;
 }
 
 #root {
@@ -18,6 +19,7 @@ body {
   width: 100%;
   height: 100%;
   color: #776e65;
+  overscroll-behavior-y: contain;
 }
 
 code {
@@ -169,7 +171,6 @@ button:hover {
 }
 
 .cta-container {
-  width: 30rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
