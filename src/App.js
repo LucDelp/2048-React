@@ -93,12 +93,12 @@ function App () {
     }
 
     document.addEventListener('keydown', handleArrow)
-    document.addEventListener('touchstart', handleTouchStart, false);        
-    document.addEventListener('touchmove', handleTouchMove, false);
+    document.addEventListener('touchstart', handleTouchStart, { passive: false });        
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
     return () => { 
       document.removeEventListener('keydown', handleArrow)
-      document.removeEventListener('touchstart', handleTouchStart, false)   
-      document.removeEventListener('touchmove', handleTouchMove, false)
+      document.removeEventListener('touchstart', handleTouchStart, { passive: false })   
+      document.removeEventListener('touchmove', handleTouchMove, { passive: false })
     }
   }, [])
 
@@ -107,6 +107,18 @@ function App () {
   return (
     <div className='App'>
       <p>Use directional arrows to play ← ↑ →</p>
+      <div className='cta-container'>
+        <button className='Save-button' onClick={() => { dispatch({ type: SAVE }) }}>save</button>
+        <button
+          className='New'
+          onClick={() => {
+            dispatch({ type: NEW_GAME })
+            if (topScore < currentScore) setTopScore(currentScore)
+          }}
+        >
+          new board
+        </button>
+      </div>
       <Board
         board={board}
         hasChanged={hasChanged}
@@ -114,16 +126,6 @@ function App () {
         topScore={topScore}
         dispatch={dispatch}
       />
-      <button className='Save-button' onClick={() => { dispatch({ type: SAVE }) }}>save</button>
-      <button
-        className='New'
-        onClick={() => {
-          dispatch({ type: NEW_GAME })
-          if (topScore < currentScore) setTopScore(currentScore)
-        }}
-      >
-        new board
-      </button>
       {
         isLost && (
           <GameOver dispatch={dispatch} />
